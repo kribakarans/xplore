@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Execute via cURL.
+
+curl http://localhost:1111/
+#curl http://localhost:1111/cgi-bin/xplore.cgi
