@@ -9,30 +9,32 @@ void html_load_page(const char *file)
 	ssize_t nbytes = 0;
 	char *line = NULL;
 
-	if (file == NULL) {
-		html_error("invalid page (null)");
-		return;
-	}
+	do {
+		if (file == NULL) {
+			html_error("invalid page (null)");
+			break;
+		}
 
-	if (strlen(file) <= 0) {
-		html_error("invalid page name (empty)");
-		return;
-	}
+		if (strlen(file) <= 0) {
+			html_error("invalid page name (empty)");
+			break;
+		}
 
-	logit("%s", file);
+		logit("%s", file);
 
-	fp = fopen(file, "r");
-	if (fp == NULL) {
-		html_error("failed to open '%s': %s", file, strerror(errno));
-		return;
-	}
+		fp = fopen(file, "r");
+		if (fp == NULL) {
+			html_error("failed to open '%s': %s", file, strerror(errno));
+			break;
+		}
 
-	while ((nbytes = getline(&line, &len, fp)) != -1) {
-		html_s("%s", line);
-	}
+		while ((nbytes = getline(&line, &len, fp)) != -1) {
+			html_s("%s", line);
+		}
 
-	fclose(fp);
-	free(line);
+		fclose(fp);
+		free(line);
+	} while(0);
 
 	return;
 }
