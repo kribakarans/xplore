@@ -1,3 +1,6 @@
 *.o
+*.d
 *.out
 *.sw*
+__build
+xplore.cgi

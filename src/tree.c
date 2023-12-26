@@ -43,7 +43,8 @@ static int traverse_directory(const char *dirname)
 		}
 
 		/* Get relative file path and store in filename buffer */
-		asprintf(&filename, "%s/%s", dirname, namelist[i]->d_name);
+		retval = asprintf(&filename, "%s/%s", dirname, namelist[i]->d_name);
+		assert(retval != -1);
 
 		if (kstat(filename, &sb) < 0) {
 			html_error("kstat failed: %s (%s)", filename, strerror(errno));
@@ -82,40 +83,42 @@ static int traverse_directory(const char *dirname)
 	/* Free scandir list */
 	free(namelist);
 
-	return 0;
+	return retval;
 }
 
 void html_tree_worker(const char *path)
 {
 	kstat_t sb = {0};
 
-	if (access(path, F_OK) < 0) {
-		html_error("file is not exist: %s (%s)", path, strerror(errno));
-		return;
-	}
-
-	if (kstat(path, &sb) < 0) {
-		html_error("kstat failed: %s (%s)", path, strerror(errno));
-		return;
-	}
-
-	switch (sb.mode & S_IFMT) {
-		case S_IFLNK:
-			html("    <li><span class='file'>%s (link)</a></span></li>", path);
+	do {
+		if (access(path, F_OK) < 0) {
+			html_error("file is not exist: %s (%s)", path, strerror(errno));
 			break;
+		}
 
-		case S_IFDIR:
-			html("    <li><span class='folder'><a target='main'>%s</a></span>", sb.basename);
-			html("  <ul>");
-			traverse_directory(path);
-			html("  </ul></li>");
+		if (kstat(path, &sb) < 0) {
+			html_error("kstat failed: %s (%s)", path, strerror(errno));
 			break;
+		}
 
-		case S_IFREG:
-		default:
-			process_file(&sb);
-			break;
-	};
+		switch (sb.mode & S_IFMT) {
+			case S_IFLNK:
+				html("    <li><span class='file'>%s (link)</a></span></li>", path);
+				break;
+
+			case S_IFDIR:
+				html("    <li><span class='folder'><a target='main'>%s</a></span>", sb.basename);
+				html("  <ul>");
+				traverse_directory(path);
+				html("  </ul></li>");
+				break;
+
+			case S_IFREG:
+			default:
+				process_file(&sb);
+				break;
+		};
+	} while(0);
 
 	return;
 }

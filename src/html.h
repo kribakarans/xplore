@@ -1,10 +1,17 @@
 #ifndef __CGI_HTML_H__
 #define __CGI_HTML_H__
 
+#include <time.h>
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+
+/*
+  Return 1, if the string is valid.
+  Return 0, if the string is NULL or empty.
+*/
+#define is_valid_string(x) ((x != NULL) && (strlen(x) > 0))
 
 /* without line terminator */
 #define html_s(fmt, args...) \
@@ -40,10 +47,12 @@ do { \
 
 #define html_error(fmt, args...) \
 do { \
+	time_t ctime = time(NULL); \
 	html_header_title("ERROR!"); \
 	html("<body>"); \
 	html("<h2 style=\"color:Tomato;\">Oops! " fmt "</h2>", ##args); \
-	fprintf(stdout, "<h4 style=\"font-family:Courier New;\">Trace: %s:%d %s(): " fmt "</h4>\n", __FILE__, __LINE__, __func__, ##args); \
+	fprintf(stdout, "<h4 style=\"font-family:Courier New;\">Trace: %ld %s:%d %s(): " fmt "</h4>\n", \
+	                 ctime, __FILE__, __LINE__, __func__, ##args); \
 	html("</body>"); \
 	html_footer(); \
 } while(0);
