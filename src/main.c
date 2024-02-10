@@ -52,19 +52,29 @@ char *cgi_get_keyval(char *iquery, const char *targetKey)
 
 void cgi_serve_blank_page(void)
 {
-	html_load_page("/var/www/html/xplore/html/header.html");
+	char *filep = NULL;
+	char *file = "html/header.html";
+
+	asprintf(&file, "%s/%s", HTROOT, file);
+	html_load_page(file);
 	html_footer();
+	free(filep);
 
 	return;
 }
 
 void cgi_serve_file_tree(const char *path)
 {
-	html_load_page("/var/www/html/xplore/html/treeview.html");
+	char *filep = NULL;
+	char *file = "html/treeview.html";
+
+	asprintf(&file, "%s/%s", HTROOT, file);
+	html_load_page(file);
 	html_body_init();
 	html_load_tree(path);
 	html_body_end();
 	html_footer();
+	free(filep);
 
 	return;
 }

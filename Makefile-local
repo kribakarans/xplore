@@ -14,12 +14,12 @@ OBJDIR    :=  obj
 SHARE     :=  share
 DIRBUILD  :=  __build
 
-HTMLROOT  :=  /xplore
-PREFIX    :=  /usr/local
-HTPREFIX  :=  /var/www/html
-DIRCGIBIN :=  /usr/lib/cgi-bin
+HTMLROOT  :=  #@HTMLROOT should be empty here
+PREFIX    :=  $(HOME)/.local
+HTPREFIX  :=  $(PREFIX)/var/www/html
 HTROOT    :=  $(HTPREFIX)/$(ELFNAME)
 HTCONFIG  :=  $(PREFIX)/etc/$(ELFNAME)
+DIRCGIBIN :=  $(HTPREFIX)/$(ELFNAME)/cgi-bin
 
 CC        ?=  gcc
 CFLAGS    += -g -O3 -MMD -fPIE \

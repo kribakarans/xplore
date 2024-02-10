@@ -14,15 +14,13 @@
 #define is_valid_string(x) ((x != NULL) && (strlen(x) > 0))
 
 /* without line terminator */
-#define html_s(fmt, args...) \
+#define html_l(fmt, args...) \
 do { \
-	fprintf(stderr, "\e[33m" fmt "\e[0m", ##args); \
 	fprintf(stdout, fmt "", ##args); \
 } while(0);
 
 #define html(fmt, args...) \
 do { \
-	fprintf(stderr, "\e[33m" fmt "\e[0m\n", ##args); \
 	fprintf(stdout, fmt "\n", ##args); \
 } while(0);
 

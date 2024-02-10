@@ -8,46 +8,27 @@
 #include "html.h"
 #include "logit.h"
 
-#ifndef PREFIX
-#define PREFIX "/usr/local"
-#endif
-
 #define CONFIGNAME "xplore.cfg"
 #define LOOKUPNAME "xplore.path"
 #define size_of(x) (sizeof(x)-1)
 
-static char prefix[128];
-static char diretc[256];
-static char dirhtml[PATH_MAX];
-static char dircgibin[PATH_MAX];
 static char configfile[PATH_MAX];
 static char lookupfile[PATH_MAX];
 
 int cgit_init(void)
 {
 	int retval = -1;
-	char *envptr = NULL;
 
-	envptr = getenv("PREFIX");
-	if (is_valid_string(envptr)) {
-		strncpy(prefix, envptr, size_of(prefix));
-	} else {
-		strncpy(prefix, PREFIX, size_of(prefix));
-	}
-
-	logit("PREFIX_PATH=%s", prefix);
-
-	/* @etc directory: /usr/local/etc/xplore */
-	snprintf(diretc, size_of(diretc), "%s/%s/%s", prefix, "etc", "xplore");
-	logit("ETC_PATH=%s", diretc);
+	logit("HTROOT: %s", HTROOT);
+	logit("HTCONFIG: %s", HTCONFIG);
 
 	/* Config file path: /usr/local/etc/xplore/xplore.cfg */
-	snprintf(configfile, size_of(configfile), "%s/%s", diretc, CONFIGNAME);
-	logit("CONFIG_FILE=%s", configfile);
+	snprintf(configfile, size_of(configfile), "%s/%s", HTCONFIG, CONFIGNAME);
+	logit("HTCFGFILE=%s", configfile);
 
 	/* Lookup file path: /usr/local/etc/xplore/xplore.path */
-	snprintf(lookupfile, size_of(lookupfile), "%s/%s", diretc, LOOKUPNAME);
-	logit("LOOKUP_FILE=%s", lookupfile);
+	snprintf(lookupfile, size_of(lookupfile), "%s/%s", HTCONFIG, LOOKUPNAME);
+	logit("HTLOOKUP=%s", lookupfile);
 
 	return retval;
 }

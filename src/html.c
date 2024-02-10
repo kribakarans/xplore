@@ -29,7 +29,7 @@ void html_load_page(const char *file)
 		}
 
 		while ((nbytes = getline(&line, &len, fp)) != -1) {
-			html_s("%s", line);
+			html_l("%s", line);
 		}
 
 		fclose(fp);
