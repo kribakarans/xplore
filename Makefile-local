@@ -24,8 +24,8 @@ DIRCGIBIN :=  $(HTPREFIX)/$(ELFNAME)/cgi-bin
 CC        ?=  gcc
 CFLAGS    += -g -O3 -MMD -fPIE \
              -DHTROOT=\"$(HTROOT)\" -DHTCONFIG=\"$(HTCONFIG)\"
-LDFLAGS   += -static
-LDLIBS    += -lkstat -lmagic -llzma -lbz2 -lz
+LDFLAGS   +=
+LDLIBS    += -lkstat
 
 WFLAGS    += -Wall -Wextra -Wstrict-prototypes -Wno-unused-parameter -Wno-unused-result # -Wpedantic
 WFLAGS    += -Walloca -Warray-bounds -Wcast-align -Wcast-qual -Wconversion -Wformat=2 -Wformat-security \
